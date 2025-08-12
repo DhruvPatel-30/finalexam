@@ -20,7 +20,7 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.3.5
+          terraform_version: 1.6.0
 
       - name: Terraform Format Check
         run: terraform fmt 
@@ -52,7 +52,7 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.3.5
+          terraform_version: 1.6.0
 
       - name: Initialize Terraform
         run: terraform init
