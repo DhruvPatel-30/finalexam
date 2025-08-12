@@ -1,48 +1,45 @@
-name: Terraform CI/CD
+name: terraform-ci
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
 
 jobs:
   terraform:
-    name: Terraform
+  validate:
     runs-on: ubuntu-latest
-
     env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.AWS_REGION }}
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
+      - name: Checkout repository
+      - uses: actions/checkout@v4
+    
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
         terraform_version: 1.3.5
 
-    - name: Initialize Terraform
-      run: terraform init
+      - name: Terraform Format Check
+        run: terraform fmt 
 
-    - name: Validate Terraform
-      run: terraform validate
+      - name: Terraform Init
+        run: terraform init
 
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan -var="core_count=1" -var="thread_count=2"
+      - name: Terraform Validate
+        run: terraform validate
 
-    - name: Apply Terraform (on push to main)
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: terraform apply -var="core_count=1" -var="thread_count=2" -auto-approve
+      - name: Terraform Plan
+        run: terraform plan
+        
+      - name: Apply Terraform (on push to main)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: terraform apply -var="core_count=1" -var="thread_count=2" -auto-approve
 
-  destroy:
+    destroy:
     name: Terraform Destroy
     runs-on: ubuntu-latest
 
