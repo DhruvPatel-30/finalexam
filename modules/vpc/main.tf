@@ -82,10 +82,3 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.private.id
 }
 
-output "vpc" {
-  value = aws_vpc.this.arn
-}
-
-output "public_subnets" {
-  value = [for s in aws_subnet.public : s.arn]
-}
