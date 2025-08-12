@@ -179,15 +179,3 @@ resource "aws_cloudwatch_metric_alarm" "cpu_high" {
 
 }
 
-
-output "alb_dns" {
-  value = aws_lb.app.dns_name
-}
-
-output "bucket_name" {
-  value = aws_s3_bucket.assets.bucket
-}
-
-output "vpc_id" {
-  value = module.network.vpc
-}
