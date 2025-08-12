@@ -20,10 +20,6 @@ module "network" {
 
 
   
-  tags = {
-  "env"  : "staging,"
-  "team" : "var.team"
-}
 }
 
 
