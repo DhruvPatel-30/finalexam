@@ -4,7 +4,7 @@ variable "name_prefix" { type = string }
 variable "cidr_block" { type = string }
 variable "availability_zones" { type = list(string) }
 
-variable "enable_nat_gateway" { type = bool }
+
 
 variable "public_subnet_bits" { type = number }
 variable "private_subnet_bits" { type = number }
